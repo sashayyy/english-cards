@@ -36,6 +36,7 @@ button {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    text-align: center;
     border-radius: 10px;
     background-color: rgb(242, 241, 249);
     box-shadow: 3px 3px 10px rgb(154, 151, 161);
