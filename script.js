@@ -1,34 +1,9 @@
 let inputFindWord = document.getElementById('query');
 let buttonFind = document.getElementById('find');
-let cardsContainer = document.querySelector('cards-container');
-let cards = [];
-
-class Card{
-    constructor(imgUrl, enText, ruText) {
-        this.imgUrl = imgUrl;
-        this.enText = enText;
-        this.ruText = ruText;
-    }
-
-    get imgUrl() {
-        return this.imgUrl;
-    }
-
-    get enText() {
-        return this.enText;
-    }
-
-    get ruText() {
-        return this.ruText;
-    }
-
-    addCard() {
-
-    }
-}
+let cardsContainer = document.getElementsByClassName('cards-container')[0];
 
 buttonFind.addEventListener("click", addCard);
-document.addEventListener('keydown', (event) => {
+document.addEventListener('keydown', async (event) => {
     if (event.key === 'Enter') {
         event.preventDefault();
         addCard();
@@ -46,11 +21,6 @@ async function imageRequest(query) {
     return jsonObj.results[0].urls.small
 }
 
-function addImageHtml(data) {
-    const element = document.getElementById('first-img');
-    element.src = data;
-}
-
 async function translateRequest(textToTranslate) {
     const requestURL = `https://translation.googleapis.com/language/translate/v2?key=AIzaSyALrf8M2j0wkJgiad1g_jULzPxe-43FBWI&q=${textToTranslate}&source=en&target=ru&format=text`;
     const request = new Request(requestURL);
@@ -59,27 +29,21 @@ async function translateRequest(textToTranslate) {
 
     let jsonObj = await response.json();
     
-    return wordTranslated = jsonObj['data']['translations'][0]['translatedText'];
-}
-
-function addTranslateHtml(data) {
-    let element = document.getElementsByClassName('answer-ru');
-    element[0].textContent = data;
-}
-
-function addWordHtml(data) {
-    let element = document.getElementsByClassName('answer-en');
-    element[0].textContent = data;
+    return jsonObj['data']['translations'][0]['translatedText'];
 }
 
 async function addCard() {
-    let query = document.getElementById('query').value;
-    let responseImage = await imageRequest(query);
-    let responseText = await translateRequest(query);
+    let enText = document.getElementById('query').value;
+    let ruText = await translateRequest(enText);
+    let imgUrl = await imageRequest(enText);
 
-    addImageHtml(responseImage);
-    addTranslateHtml(responseText);
-    addWordHtml(query);
+    let card = document.createElement('div');
+    card.className = 'card';
+    card.insertAdjacentHTML('afterbegin', `<figure><img src=${imgUrl} width="210px" height="210px"></figure>`);
+    card.insertAdjacentHTML('beforeend', `<p class="answer-en">${enText}</p>`);
+    card.insertAdjacentHTML('beforeend', `<p class="answer-ru">${ruText}</p>`);
+
+    cardsContainer.prepend(card);
 }
 
 

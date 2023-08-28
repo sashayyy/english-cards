@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="en-ru">
 
 <head>
     <meta charset="utf-8">
@@ -9,20 +9,15 @@
 </head>
 
 <body>
-    <form style="display: inline-block;">
-        <label for="query">enter word to find</label>
-        <input type="text" id="query" name="query">
-    </form>
-    <button id="find">find</button>
-
-    <div class="cards-container">
-        <div class="card">
-            <figure><img id="first-img" width="210px" height="210px"></figure>
-            <p class="answer-en"></p>
-            <p class="answer-ru"></p>
-        </div>
+    <div class="form">
+        <form>
+            <label for="query">enter word to create card with</label>
+            <input type="text" id="query" name="query">
+        </form>
+        <button id="find">add card</button>
     </div>
 
+    <div class="cards-container"></div>
 
     <script src="script.js"></script>
 </body>
