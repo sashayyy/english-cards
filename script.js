@@ -11,6 +11,7 @@ if (localStorage.getItem('cards') !== null) {
         card.insertAdjacentHTML('afterbegin', `<figure><img src=${element.imgUrl} width="210px" height="210px"></figure>`);
         card.insertAdjacentHTML('beforeend', `<p class="answer-en">${element.enText}</p>`);
         card.insertAdjacentHTML('beforeend', `<p class="answer-ru">${element.ruText}</p>`);
+        card.style = `background-color: ${randomLightColor()};`;
     
         cardsContainer.append(card);
     });
@@ -61,8 +62,18 @@ async function addCard() {
     card.insertAdjacentHTML('afterbegin', `<figure><img src=${imgUrl} width="210px" height="210px"></figure>`);
     card.insertAdjacentHTML('beforeend', `<p class="answer-en">${enText}</p>`);
     card.insertAdjacentHTML('beforeend', `<p class="answer-ru">${ruText}</p>`);
+    card.style = `background-color: ${randomLightColor()};`;
     cardsContainer.prepend(card);
 
     cards.unshift({ imgUrl: imgUrl, ruText: ruText, enText: enText });
     updateLocalStorage(cards);
+}
+
+function randomLightColor() {
+    let r, g, b;
+    r = Math.floor(Math.random() * 50) + 190;
+    g = Math.floor(Math.random() * 50) + 190;
+    b = Math.floor(Math.random() * 50) + 190;
+
+    return '#' + r.toString(16) + g.toString(16) + b.toString(16);
 }
