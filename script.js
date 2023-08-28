@@ -1,11 +1,37 @@
 let inputFindWord = document.getElementById('query');
 let buttonFind = document.getElementById('find');
+let cardsContainer = document.querySelector('cards-container');
+let cards = [];
 
-buttonFind.addEventListener("click", findImage);
+class Card{
+    constructor(imgUrl, enText, ruText) {
+        this.imgUrl = imgUrl;
+        this.enText = enText;
+        this.ruText = ruText;
+    }
+
+    get imgUrl() {
+        return this.imgUrl;
+    }
+
+    get enText() {
+        return this.enText;
+    }
+
+    get ruText() {
+        return this.ruText;
+    }
+
+    addCard() {
+
+    }
+}
+
+buttonFind.addEventListener("click", addCard);
 document.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
         event.preventDefault();
-        findImage();
+        addCard();
     }
 });
 
@@ -20,23 +46,9 @@ async function imageRequest(query) {
     return jsonObj.results[0].urls.small
 }
 
-function addElementHtml(data) {
+function addImageHtml(data) {
     const element = document.getElementById('first-img');
     element.src = data;
-}
-
-async function findImage() {
-    let query = document.getElementById('query').value;
-    let responseImage = await imageRequest(query);
-    let responseText = await translateRequest(query);
-
-    addElementHtml(responseImage);
-    addTranslateHtml(responseText);
-}
-
-function addTranslateHtml(data) {
-    let element = document.querySelector('p');
-    element.textContent = data;
 }
 
 async function translateRequest(textToTranslate) {
@@ -49,5 +61,26 @@ async function translateRequest(textToTranslate) {
     
     return wordTranslated = jsonObj['data']['translations'][0]['translatedText'];
 }
+
+function addTranslateHtml(data) {
+    let element = document.getElementsByClassName('answer-ru');
+    element[0].textContent = data;
+}
+
+function addWordHtml(data) {
+    let element = document.getElementsByClassName('answer-en');
+    element[0].textContent = data;
+}
+
+async function addCard() {
+    let query = document.getElementById('query').value;
+    let responseImage = await imageRequest(query);
+    let responseText = await translateRequest(query);
+
+    addImageHtml(responseImage);
+    addTranslateHtml(responseText);
+    addWordHtml(query);
+}
+
 
 

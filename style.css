@@ -1,0 +1,44 @@
+body {
+    background-color: rgb(230, 228, 247);
+}
+
+.cards-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    gap: 1rem;
+}
+
+.card {
+    padding-bottom: 1rem;
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px;
+    background-color: rgb(242, 241, 249);
+    box-shadow: 3px 3px 10px rgb(154, 151, 161);
+}
+
+figure {
+    width: 210px;
+    height: 210px;
+}
+
+p {
+    margin-block-start: 0;
+    margin-block-end: 0;
+}
+
+.answer-en {
+    display: block;
+    font-size: 2rem;
+    line-height: 2.3rem;
+}
+
+.answer-ru {
+    display: block;
+    font-size: 1.5rem;
+    line-height: 1.8rem;
+    color: rgb(83, 69, 101);
+}
