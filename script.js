@@ -1,10 +1,13 @@
 let inputFindWord = document.getElementById('query');
 let buttonFind = document.getElementById('find');
+let buttonDelete = document.getElementById('delete');
 let cardsContainer = document.getElementsByClassName('cards-container')[0];
+let form = document.getElementsByClassName('form')[0];
 
-let cards = JSON.parse(localStorage.getItem('cards'));
+let cards = [];
 
 if (localStorage.getItem('cards') !== null) {
+    cards = JSON.parse(localStorage.getItem('cards'));
     cards.forEach(element => {
         let card = document.createElement('div');
         card.className = 'card';
@@ -65,7 +68,7 @@ async function addCard() {
     card.style = `background-color: ${randomLightColor()};`;
     cardsContainer.prepend(card);
 
-    cards.unshift({ imgUrl: imgUrl, ruText: ruText, enText: enText });
+    cards.unshift({ imgUrl: imgUrl, ruText: ruText, enText: enText, isShown: true });
     updateLocalStorage(cards);
 }
 
@@ -77,3 +80,65 @@ function randomLightColor() {
 
     return '#' + r.toString(16) + g.toString(16) + b.toString(16);
 }
+
+function deleteModeSelectCards(event) {
+    if (event.target.classList.contains('card')) {
+        event.target.classList.toggle('selectedToDelete');
+        let index = cards.findIndex((item) => item.enText === event.target.querySelector('.answer-en').textContent);
+        cards[index].isShown = !cards[index].isShown;
+    } else if (event.target.parentNode.classList.contains('card')) {
+        event.target.parentNode.classList.toggle('selectedToDelete');
+        let index = cards.findIndex((item) => item.enText === event.target.parentNode.querySelector('.answer-en').textContent);
+        cards[index].isShown = !cards[index].isShown;
+    } else if (event.target.parentNode.parentNode.classList.contains('card')) {
+        event.target.parentNode.parentNode.classList.toggle('selectedToDelete');
+        let index = cards.findIndex((item) => item.enText === event.target.parentNode.parentNode.querySelector('.answer-en').textContent);
+        console.log(index);
+        cards[index].isShown = !cards[index].isShown;
+    }
+    updateLocalStorage(cards);
+}
+
+buttonDelete.addEventListener('click', deleteMode);
+
+function deleteMode() {
+    buttonDelete.removeEventListener('click', deleteMode);
+    let checkmark = document.createElement('div');
+    checkmark.className = 'checkmarkDelete';
+    checkmark.textContent = '\u2713';
+    let cross = document.createElement('div');
+    cross.className = 'crossDelete';
+    cross.textContent = '\u2BBE';
+    form.append(checkmark, cross);
+
+    let allCards = document.getElementsByClassName('card');
+    for (let i=0; i < allCards.length; ++i) {
+        allCards[i].classList.add('deleteModeCSS');
+    }
+
+    document.addEventListener('click', deleteModeSelectCards);
+    checkmark.addEventListener('click', () => {
+        Array.from(allCards).forEach((element) => {
+            if (element.classList.contains('selectedToDelete')) {
+                element.remove();
+            }
+        })
+        cards = cards.filter((item) => item.isShown === true);
+        updateLocalStorage(cards);
+    });
+
+    cross.addEventListener('click', () => {
+        document.removeEventListener('click', deleteModeSelectCards);
+        buttonDelete.addEventListener('click', deleteMode);
+        for (let i=0; i < allCards.length; ++i) {
+            allCards[i].classList.remove('deleteModeCSS');
+            if (allCards[i].classList.contains('selectedToDelete')) {
+                allCards[i].classList.remove('selectedToDelete');
+            }
+        }
+        form.removeChild(checkmark);
+        form.removeChild(cross);
+        updateLocalStorage(cards);
+    })
+}
+
