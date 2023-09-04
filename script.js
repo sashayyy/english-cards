@@ -57,6 +57,10 @@ function updateLocalStorage(data) {
     localStorage.setItem('cards', JSON.stringify(data));
 }
 
+function clearField(input) {
+    input.value = "";
+};
+
 async function addCard() {
     let enText = document.getElementById('query').value;
     let ruText = await translateRequest(enText);

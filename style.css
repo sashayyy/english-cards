@@ -77,9 +77,11 @@ input[type=text]:focus {
 }
 
 .checkmarkDelete {
+    top: 15%;
     left: 40%;
 }
 .crossDelete {
+    top: 15%;
     left: 60%;
 }
 
