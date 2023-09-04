@@ -1,5 +1,7 @@
 body {
     background-color: rgb(242, 241, 253);
+    color:#4f535c;
+    font-family: 'Jost', sans-serif;
 }
 
 .form {
@@ -17,6 +19,7 @@ button {
     font-size: 1.7rem;
     border: 3px solid #a1abc2;
     border-radius: 10px;
+    color: #4f535c;
     background-color: rgb(242, 241, 253);
     padding: 0.5rem;
     box-sizing: border-box;
@@ -52,10 +55,9 @@ input[type=text]:focus {
     transition: all 0.25s ease;
 }
 
-/* .deleteModeOptions {
-    display: flex;
-    justify-content: space-around;
-} */
+.deleteModeOptions {
+    height: 4rem;
+}
 
 .checkmarkDelete,
 .crossDelete {
@@ -77,11 +79,11 @@ input[type=text]:focus {
 }
 
 .checkmarkDelete {
-    top: 15%;
+    top: 5%;
     left: 40%;
 }
 .crossDelete {
-    top: 15%;
+    top: 5%;
     left: 60%;
 }
 

@@ -5,14 +5,17 @@
     <meta charset="utf-8">
     <title>English cards</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <div class="form">
-        <form>
+        <form id="input-query">
             <label for="query">enter word to create card with</label>
-            <input type="text" id="query" name="query" onfocus="clearField(this);">
+            <input type="text" id="query" name="query" placeholder="english words only" onfocus=clearField(this)>
         </form>
         <button id="find">add card</button>
         <button id="delete">delete cards</button>

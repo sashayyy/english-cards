@@ -3,6 +3,7 @@ let buttonFind = document.getElementById('find');
 let buttonDelete = document.getElementById('delete');
 let cardsContainer = document.getElementsByClassName('cards-container')[0];
 let form = document.getElementsByClassName('form')[0];
+let input = document.getElementById('input-query');
 
 let cards = [];
 
@@ -113,9 +114,6 @@ function deleteMode() {
     buttonFind.removeEventListener('click', addCard);
     buttonDelete.removeEventListener('click', deleteMode);
 
-    form.removeChild(buttonFind);
-    form.removeChild(buttonDelete);
-
     let checkmark = document.createElement('div');
     checkmark.className = 'checkmarkDelete';
     checkmark.textContent = '\u2713';
@@ -127,7 +125,7 @@ function deleteMode() {
     deleteModeOptions.className = 'deleteModeOptions';
     deleteModeOptions.appendChild(checkmark);
     deleteModeOptions.appendChild(cross);
-    form.after(deleteModeOptions);
+    form.replaceWith(deleteModeOptions);
 
     let allCards = document.getElementsByClassName('card');
     for (let i=0; i < allCards.length; ++i) {
@@ -159,11 +157,7 @@ function deleteMode() {
                 allCards[i].classList.remove('selectedToDelete');
             }
         }
-        deleteModeOptions.removeChild(checkmark);
-        deleteModeOptions.removeChild(cross);
-        form.appendChild(buttonFind);
-        form.appendChild(buttonDelete);
-        document.removeChild(deleteModeOptions);
+        deleteModeOptions.replaceWith(form);
 
         updateLocalStorage(cards);
     })
