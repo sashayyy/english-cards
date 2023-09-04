@@ -21,12 +21,14 @@ if (localStorage.getItem('cards') !== null) {
 }
 
 buttonFind.addEventListener("click", addCard);
-document.addEventListener('keydown', (event) => {
+document.addEventListener('keydown', keydownAddCard);
+
+async function keydownAddCard(event) {
     if (event.key === 'Enter') {
         event.preventDefault();
         addCard();
     }
-});
+}
 
 
 async function imageRequest(query) {
@@ -66,6 +68,7 @@ async function addCard() {
     card.insertAdjacentHTML('beforeend', `<p class="answer-en">${enText}</p>`);
     card.insertAdjacentHTML('beforeend', `<p class="answer-ru">${ruText}</p>`);
     card.style = `background-color: ${randomLightColor()};`;
+    card.classList.add('appear-first');
     cardsContainer.prepend(card);
 
     cards.unshift({ imgUrl: imgUrl, ruText: ruText, enText: enText, isShown: true });
@@ -102,17 +105,31 @@ function deleteModeSelectCards(event) {
 buttonDelete.addEventListener('click', deleteMode);
 
 function deleteMode() {
+    document.removeEventListener('click', keydownAddCard);
+    buttonFind.removeEventListener('click', addCard);
     buttonDelete.removeEventListener('click', deleteMode);
+
+    form.removeChild(buttonFind);
+    form.removeChild(buttonDelete);
+
     let checkmark = document.createElement('div');
     checkmark.className = 'checkmarkDelete';
     checkmark.textContent = '\u2713';
     let cross = document.createElement('div');
     cross.className = 'crossDelete';
     cross.textContent = '\u2BBE';
-    form.append(checkmark, cross);
+
+    let deleteModeOptions = document.createElement('div');
+    deleteModeOptions.className = 'deleteModeOptions';
+    deleteModeOptions.appendChild(checkmark);
+    deleteModeOptions.appendChild(cross);
+    form.after(deleteModeOptions);
 
     let allCards = document.getElementsByClassName('card');
     for (let i=0; i < allCards.length; ++i) {
+        if (allCards[i].classList.contains('appear-first')) {
+            allCards[i].classList.remove('appear-first');
+        }
         allCards[i].classList.add('deleteModeCSS');
     }
 
@@ -129,6 +146,8 @@ function deleteMode() {
 
     cross.addEventListener('click', () => {
         document.removeEventListener('click', deleteModeSelectCards);
+        document.addEventListener('click', keydownAddCard);
+        buttonFind.addEventListener('click', addCard);
         buttonDelete.addEventListener('click', deleteMode);
         for (let i=0; i < allCards.length; ++i) {
             allCards[i].classList.remove('deleteModeCSS');
@@ -136,8 +155,12 @@ function deleteMode() {
                 allCards[i].classList.remove('selectedToDelete');
             }
         }
-        form.removeChild(checkmark);
-        form.removeChild(cross);
+        deleteModeOptions.removeChild(checkmark);
+        deleteModeOptions.removeChild(cross);
+        form.appendChild(buttonFind);
+        form.appendChild(buttonDelete);
+        document.removeChild(deleteModeOptions);
+
         updateLocalStorage(cards);
     })
 }
